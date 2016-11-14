@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 
-my $filelike  = 'numbers.txt';
+my $filelike  = 'Number_pairs.txt';
 open my $fh, '<', $filelike or die $!;
 while (<$fh>) {
 	unless(/^ *$/){
@@ -16,14 +16,13 @@ sub main{
 	my @numbers = split(/,/,$core);
 	my $flag    = 0;		
 	my @unique  = get_unique(@numbers);			
+	my $string;
 	
 	foreach my $i(0..$#numbers){
 		foreach(my $j=$i+1;$j < $#numbers+1;$j++){
 			if ( check_sum($numbers[$i],$numbers[$j],$number) && ( scalar grep(/$numbers[$j]/,@unique) )   ) {
-					#2.mo pair kiiratasa pontos vesszo nelkul, meg egy pontos vesszo csak akkor a kiiras elejre ha a flag erteke !0
 					$flag++;
-					print join( ",", sort { $a <=> $b } ($numbers[$i],$numbers[$j])) . ";";
-					#1.mo array be pairek, kivul join ba print
+				    $string .= join( ",", sort { $a <=> $b } ($numbers[$i],$numbers[$j])) . ";";
 				}elsif ( check_sum($numbers[$i],$numbers[$j],$number) ) {
 					print "\n";
 				}
@@ -32,7 +31,8 @@ sub main{
 	unless ($flag) {
 		print "NULL\n";
 	}else{
-		print "\n";
+		chop $string;
+		print "$string\n";
 	}
 }
 
